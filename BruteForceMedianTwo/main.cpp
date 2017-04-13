@@ -1,20 +1,20 @@
-//INCLUDES//
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <sstream>
 #include <string>
 #include <tuple>
-//system clock includes//
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <cstdlib>
+
 
 using namespace std;
 using namespace std::chrono;
 
 //declaring a type of vector to hold tuples
-typedef vector < tuple<int, int,float> listOfTuples;
+typedef vector < tuple<int, int,float> >listOfTuples;
 
 //method to fill a dummy csv
 void populateCsv(int numValues);
@@ -42,7 +42,7 @@ int main()
             tuples.emplace_back(bruteForceMedian());
         }
 
-        for(n : tuples){
+        for(auto &n : tuples){
             arrayLength = get<0>(n);
             operationsTotal += get<1>(n);
             runtime += get<2>(n);
@@ -105,15 +105,15 @@ tuple<long,long,float> bruteForceMedian(){
         A.push_back(lineInt);
     }
 
-    steady_clock::time_point timeAtStart  = steady_clock:::now();
+    steady_clock::time_point timeAtStart  = steady_clock::now();
 
     int arrayLength  = A.size();
-    int k = sizeOfArray/2;
+    int k = arrayLength/2;
     int basicOperations = 0;
 
     //manage odd array halves
     if(arrayLength%2 == 1){
-        k++
+        k++;
     }
     cout << "Array of size: " << A.size() << " k = " << k << endl;
 
@@ -133,7 +133,7 @@ tuple<long,long,float> bruteForceMedian(){
         }
         if(numsmaller < k && k <= (numsmaller + numequal)){
             steady_clock::time_point timeFinished = steady_clock::now();
-            timeTaken = duration_cast<duration<double>>(timeFinished - timeAtStart)
+            timeTaken = duration_cast<duration<double>>(timeFinished - timeAtStart);
 
             cout << "median:" << A[i] << endl;
             cout << "basic operations: " << basicOperations << "for array size" << arrayLength << endl;
@@ -145,5 +145,5 @@ tuple<long,long,float> bruteForceMedian(){
             cout << "median could not be found" << endl;
         }
 
+    }
 }
-
