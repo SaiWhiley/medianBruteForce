@@ -21,6 +21,7 @@ void populateCsv(int numValues);
 tuple<long, long, float> bruteForceMedian();
 
 
+
 int main()
 {
     cout << "Assessment 1: BruteForceMedian | Sai Whiley n9454829" << endl;
@@ -33,11 +34,14 @@ int main()
 
     listOfTuples tuples;
 
-    for(int i = 0; i < 1000; i++){
+    ofstream results;
+    results.open("results.csv", fstream::app);
+    results << "Array Size,MeanOperations,MeanRuntime";
+    for(int i = 0; i < 100; i++){
         numValues += 10;
         tuples.clear();
 
-        for(int j = 0; j < 10; j++){
+        for(int j = 0; j < 100; j++){
             populateCsv(numValues);
             tuples.emplace_back(bruteForceMedian());
         }
@@ -48,13 +52,11 @@ int main()
             runtime += get<2>(n);
         }
 
-        meanRuntime = runtime/10;
-        meanOperations = operationsTotal/10;
+        meanRuntime = runtime/100;
+        meanOperations = operationsTotal/100;
 
-        ofstream results;
-        results.open("results.csv", fstream::app);
-        results << "\r\n" << arrayLength << "," << meanOperations << "," << meanRuntime;
-        results.close();
+        results << "\r" << arrayLength << "," << meanOperations << "," << meanRuntime;
+
 
         //reset
         meanOperations = 0;
@@ -64,6 +66,7 @@ int main()
 
 
     }
+    results.close();
 }
 
 //populateCsv - populates a csv with random values to have the median found
@@ -115,17 +118,17 @@ tuple<long,long,float> bruteForceMedian(){
     if(arrayLength%2 == 1){
         k++;
     }
-    cout << "Array of size: " << A.size() << " k = " << k << endl;
+    cout << "Array of size: " << A.size() << " k = " << k << " ";
 
     for(int i = 0;  i < arrayLength-1; i++){
         numsmaller = 0;
         numequal = 0;
         for(int j = 0; j < arrayLength-1; j++){
-
             basicOperations++;
             if(A[i] > A[j]){
                numsmaller++;
             }else{
+                basicOperations++;
                 if(A[i] == A[j]){
                     numequal++;
                 }
@@ -135,14 +138,11 @@ tuple<long,long,float> bruteForceMedian(){
             steady_clock::time_point timeFinished = steady_clock::now();
             timeTaken = duration_cast<duration<double>>(timeFinished - timeAtStart);
 
-            cout << "median:" << A[i] << endl;
-            cout << "basic operations: " << basicOperations << "for array size" << arrayLength << endl;
+            cout << "median:" << A[i];
+            cout << " basic operations: " << basicOperations << " for array size " << arrayLength << endl;
 
             return make_tuple(arrayLength, basicOperations, timeTaken.count());
 
-        }
-        else{
-            cout << "median could not be found" << endl;
         }
 
     }
